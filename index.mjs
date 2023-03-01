@@ -14,21 +14,24 @@ const server = new ApolloServer({
   }),
 });
 
+const handleContext = async ({req, res}) => {
+  const token =
+    req.headers.authorization?.indexOf('Bearer ') === 0
+      ? req.headers.authorization?.replace('Bearer ', '')
+      : undefined;
+
+  try {
+    const decoded = decode(token);
+    return {
+      email: decoded.email,
+    };
+  } catch (e) {
+    console.error('e = ', e);
+    return {};
+  }
+};
+
 const {url} = await startStandaloneServer(server, {
-  context: async ({req, res}) => {
-    const token = req.headers.authorization?.replace('Bearer ', '');
-
-    try {
-      const decoded = decode(token);
-      // console.log('decoded = ', decoded);
-
-      return {
-        email: decoded.email,
-      };
-    } catch (e) {
-      console.log('e = ', e);
-      return {};
-    }
-  },
+  context: handleContext,
 });
 console.log(`🚀 Server ready at ${url}`);

@@ -55,7 +55,6 @@ export function todoResolver({db}) {
 
 export function createTodoResolver({db}) {
   return async function createTodo(args, req, ctx) {
-    console.log('create todo = ', req, ctx);
     try {
       return await new Promise((resolve, reject) => {
         db.get(
@@ -82,7 +81,6 @@ export function createTodoResolver({db}) {
 
 export function updateTodoResolver({db}) {
   return async function updateTodo(args, req, ctx) {
-    console.log('update ');
     try {
       return await new Promise((resolve, reject) => {
         db.get(
@@ -114,7 +112,6 @@ export function deleteTodoResolver({db}) {
   return async function deleteTodo(args, req, ctx) {
     try {
       return await new Promise((resolve, reject) => {
-        console.log('del sql = ', [req.id]);
         db.run(
           `
           DELETE FROM todos 
